@@ -1,0 +1,23 @@
+﻿@viewModel DotvvmAuthSample.ViewModels.DefaultViewModel, DotvvmAuthSample
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+	<h1>Azure AD Authentication Sample</h1>
+
+    <p>This is a sample DotVVM application that demonstrates the authentication.</p>
+
+    <p>
+        <dot:Button Text="Sign In (explicit challenge)" Click="{command: SignIn()}" />
+        &nbsp;
+        <dot:Button Text="Sign In (using Authorize attribute)" Click="{command: ActionThatRequiresSignIn()}" />
+    </p>
+    
+</body>
+</html>

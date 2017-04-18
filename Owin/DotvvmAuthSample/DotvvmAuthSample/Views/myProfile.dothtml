@@ -1,0 +1,23 @@
+﻿@viewModel DotvvmAuthSample.ViewModels.MyProfileViewModel, DotvvmAuthSample
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <h1>My Profile</h1>
+
+    <p>You are signed in! Your e-mail address is <strong>{{value: Email}}</strong>.</p>
+
+    <p>
+        <dot:Button Text="Sign Out" Click="{command: SignOut()}" />
+    </p>
+
+</body>
+</html>
+
+
