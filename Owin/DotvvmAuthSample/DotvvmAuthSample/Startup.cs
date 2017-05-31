@@ -69,7 +69,7 @@ namespace DotvvmAuthSample
                 TokenValidationParameters = new TokenValidationParameters()
                 {
                     // we cannot validate issuer in multi-tenant scenarios
-                    ValidateIssuer = (ConfigurationManager.AppSettings["ida:TenantId"] == "common")
+                    ValidateIssuer = (ConfigurationManager.AppSettings["ida:TenantId"] != "common")
                 },
 
                 Notifications = new OpenIdConnectAuthenticationNotifications
