@@ -49,7 +49,7 @@ namespace DotvvmAuthSample
                 options.SignedOutRedirectUri = Configuration["AzureAd:PostLogoutRedirectUri"];
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    ValidateIssuer = false
+                    ValidateIssuer = (Configuration["AzureAd:Tenant"] != "common")
                 };
                 options.Events = new OpenIdConnectEvents
                 {
