@@ -67,9 +67,7 @@ namespace DotvvmAuthSample
                             context.Properties.Items[OpenIdConnectDefaults.UserstatePropertiesKey] = message.State;
                         }
                         message.State = context.Options.StateDataFormat.Protect(context.Properties);
-
                         DotvvmAuthenticationHelper.ApplyRedirectResponse(context.HttpContext, context.ProtocolMessage.BuildRedirectUrl());
-
                         return Task.CompletedTask;
                     }
                 };
