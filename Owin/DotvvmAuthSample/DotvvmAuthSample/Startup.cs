@@ -1,25 +1,21 @@
 using System;
 using System.Configuration;
 using System.IdentityModel.Tokens;
-using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Hosting;
+using DotvvmAuthSample;
+using DotVVM.Framework.Hosting;
+using Microsoft.IdentityModel.Protocols;
 using Microsoft.Owin;
 using Microsoft.Owin.FileSystems;
-using Microsoft.Owin.StaticFiles;
-using Owin;
-using DotVVM.Framework;
-using DotVVM.Framework.Configuration;
-using DotVVM.Framework.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Protocols;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
+using Microsoft.Owin.StaticFiles;
+using Owin;
 
-[assembly: OwinStartup(typeof(DotvvmAuthSample.Startup))]
+[assembly: OwinStartup(typeof(Startup))]
 namespace DotvvmAuthSample
 {
     public class Startup
@@ -31,16 +27,13 @@ namespace DotvvmAuthSample
             ConfigureAuth(app);
 
             // use DotVVM
-            var dotvvmConfiguration = app.UseDotVVM<DotvvmStartup>(applicationPhysicalPath, options: options =>
-            {
-                options.AddDefaultTempStorages("temp");
-            });
+            var dotvvmConfiguration = app.UseDotVVM<DotvvmStartup>(applicationPhysicalPath);
 #if !DEBUG
             dotvvmConfiguration.Debug = false;
 #endif
 
             // use static files
-            app.UseStaticFiles(new StaticFileOptions()
+            app.UseStaticFiles(new StaticFileOptions
             {
                 FileSystem = new PhysicalFileSystem(applicationPhysicalPath)
             });
@@ -49,7 +42,7 @@ namespace DotvvmAuthSample
         private void ConfigureAuth(IAppBuilder app)
         {
             // we need the Cookie Authentication middleware to persist the authentication token
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 ExpireTimeSpan = TimeSpan.FromHours(12),
                 AuthenticationType = CookieAuthenticationDefaults.AuthenticationType
@@ -59,17 +52,18 @@ namespace DotvvmAuthSample
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 
             // configure Azure AD authentication
-            var authority = new Uri("https://login.microsoftonline.com/" + ConfigurationManager.AppSettings["ida:TenantId"] + "/");
+            var authority = new Uri("https://login.microsoftonline.com/" +
+                                    ConfigurationManager.AppSettings["ida:TenantId"] + "/");
             app.UseOpenIdConnectAuthentication(new OpenIdConnectAuthenticationOptions
             {
                 ClientId = ConfigurationManager.AppSettings["ida:ClientId"],
                 Authority = authority.ToString(),
                 MetadataAddress = new Uri(authority, ".well-known/openid-configuration").ToString(),
 
-                TokenValidationParameters = new TokenValidationParameters()
+                TokenValidationParameters = new TokenValidationParameters
                 {
                     // we cannot validate issuer in multi-tenant scenarios
-                    ValidateIssuer = (ConfigurationManager.AppSettings["ida:TenantId"] != "common")
+                    ValidateIssuer = ConfigurationManager.AppSettings["ida:TenantId"] != "common"
                 },
 
                 Notifications = new OpenIdConnectAuthenticationNotifications
@@ -89,19 +83,19 @@ namespace DotvvmAuthSample
                         var appBaseUrl = GetApplicationBaseUrl(context.Request);
                         context.ProtocolMessage.RedirectUri = appBaseUrl;
                         context.ProtocolMessage.PostLogoutRedirectUri = appBaseUrl;
-                        
+
                         if (context.ProtocolMessage.RequestType == OpenIdConnectRequestType.AuthenticationRequest)
                         {
                             // we need to handle the redirect to the login page ourselves because redirects cannot use HTTP 302 in DotVVM
                             var redirectUri = context.ProtocolMessage.CreateAuthenticationRequestUrl();
-                            DotvvmRequestContext.SetRedirectResponse(DotvvmMiddleware.ConvertHttpContext(context.OwinContext), redirectUri, (int)HttpStatusCode.Redirect, true);
+                            DotvvmAuthenticationHelper.ApplyRedirectResponse(context.OwinContext, redirectUri);
                             context.HandleResponse();
                         }
                         else if (context.ProtocolMessage.RequestType == OpenIdConnectRequestType.LogoutRequest)
                         {
                             // we need to handle the redirect to the logout page ourselves because redirects cannot use HTTP 302 in DotVVM
                             var redirectUri = context.ProtocolMessage.CreateLogoutRequestUrl();
-                            DotvvmRequestContext.SetRedirectResponse(DotvvmMiddleware.ConvertHttpContext(context.OwinContext), redirectUri, (int)HttpStatusCode.Redirect, true);
+                            DotvvmAuthenticationHelper.ApplyRedirectResponse(context.OwinContext, redirectUri);
                             context.HandleResponse();
                         }
 
@@ -123,9 +117,7 @@ namespace DotvvmAuthSample
             });
         }
 
-        private static string GetApplicationBaseUrl(IOwinRequest contextRequest)
-        {
-            return contextRequest.Scheme + "://" + contextRequest.Host + contextRequest.PathBase;
-        }
+        private static string GetApplicationBaseUrl(IOwinRequest contextRequest) =>
+            contextRequest.Scheme + "://" + contextRequest.Host + contextRequest.PathBase;
     }
 }
