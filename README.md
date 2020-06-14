@@ -19,6 +19,8 @@ sample for [DotVVM](https://github.com/riganti/dotvvm).
 
 Now the application should work with all accounts from the directory.
 
+Note: If you decide to use `code` response type instead of default `id_token`, generate and set `ClientSecret` in the configuration file as well. The secret can be generated in App registrations, section Authentication.
+
 ### Multi-Tenancy
 
 If you want to make the application multi-tenant (to allow the users to sign in even if they are from a different Azure Active Directory tenant), you need to make these changes:
