@@ -16,7 +16,7 @@ namespace DotvvmAuthSample
     public class Startup
     {
         public IConfiguration Configuration { get; private set; }
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
@@ -47,10 +47,18 @@ namespace DotvvmAuthSample
                 options.ClientId = Configuration["AzureAD:ClientId"];
                 options.Authority = string.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]);
                 options.SignedOutRedirectUri = Configuration["AzureAd:PostLogoutRedirectUri"];
+                //options.ResponseType = "code";
+
+                if (options.ResponseType == "code")
+                {
+                    options.ClientSecret = Configuration["AzureAd:ClientSecret"];
+                }
+
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = (Configuration["AzureAd:Tenant"] != "common")
                 };
+
                 options.Events = new OpenIdConnectEvents
                 {
                     OnRemoteFailure = context =>
@@ -62,12 +70,15 @@ namespace DotvvmAuthSample
                     OnRedirectToIdentityProvider = context =>
                     {
                         var message = context.ProtocolMessage;
+
                         if (!string.IsNullOrEmpty(message.State))
                         {
                             context.Properties.Items[OpenIdConnectDefaults.UserstatePropertiesKey] = message.State;
                         }
+                        
+                        context.Properties.Items.Add(OpenIdConnectDefaults.RedirectUriForCodePropertiesKey, message.RedirectUri);
                         message.State = context.Options.StateDataFormat.Protect(context.Properties);
-                        DotvvmAuthenticationHelper.ApplyRedirectResponse(context.HttpContext, context.ProtocolMessage.BuildRedirectUrl());
+                        DotvvmAuthenticationHelper.ApplyRedirectResponse(context.HttpContext, message.BuildRedirectUrl());
                         return Task.CompletedTask;
                     }
                 };
@@ -75,20 +86,15 @@ namespace DotvvmAuthSample
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddConsole();
-
             app.UseAuthentication();
 			
             // use DotVVM
             var dotvvmConfiguration = app.UseDotVVM<DotvvmStartup>(env.ContentRootPath);
             
             // use static files
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(env.WebRootPath)
-            });
+            app.UseStaticFiles();
         }
     }
 }
