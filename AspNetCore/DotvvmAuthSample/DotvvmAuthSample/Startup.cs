@@ -47,12 +47,10 @@ namespace DotvvmAuthSample
                 options.ClientId = Configuration["AzureAD:ClientId"];
                 options.Authority = string.Format(Configuration["AzureAd:AadInstance"], Configuration["AzureAd:Tenant"]);
                 options.SignedOutRedirectUri = Configuration["AzureAd:PostLogoutRedirectUri"];
-                //options.ResponseType = "code";
 
-                if (options.ResponseType == "code")
-                {
-                    options.ClientSecret = Configuration["AzureAd:ClientSecret"];
-                }
+                // Uncomment the following section if you need "code" response type
+                // options.ResponseType = "code";
+                // options.ClientSecret = "Configuration["AzureAd:ClientSecret"];
 
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
