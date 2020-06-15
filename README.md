@@ -7,19 +7,24 @@ sample for [DotVVM](https://github.com/riganti/dotvvm).
 
 1. Sign in to the Azure Portal and open (or create) your Azure Active Directory resource.
 
-2. Open the Properties tab and copy the _Directory ID_ value. Paste it in the `TenantId` application setting in the `web.config` file in OWIN or `appsettings.json` in ASP.NET Core.
+2. Open the Overview tab and copy the _Directory ID_ value. Paste it in the `TenantId` application setting in the `web.config` file in OWIN or `appsettings.json` in ASP.NET Core.
 
 3. Open the App registrations tab and open (or create) the app registration.
 
 4. Copy the _Application ID_ value and paste it in the `ClientId` application setting in the `web.config` file.
 
-5. Make sure that the URL on which the web app is running, is listed in the _Home Page_ field or in the _Reply URLs_ section. The URL must match including the HTTP/HTTPS and port.
+![IDs section](/screenshots/ids.png?raw=true "IDs section")
+
+5. Make sure that the URL on which the web app is running, is listed in the _Home page URL_ field in the tab Branding and redirect URIs set in  _Redirect URIs_ field in Authentication section. The URLs must match including the HTTP/HTTPS and port.
+
+![Redirect URIs section](/screenshots/redirects.png?raw=true "Redirect URIs section")
 
 6. In ASP.NET Core version, set the `PostLogoutRedirectUri` application setting to the application root URL.
 
 Now the application should work with all accounts from the directory.
 
 Note: If you decide to use `code` response type instead of default `id_token`, generate and set `ClientSecret` in the configuration file as well. The secret can be generated in App registrations, section Authentication.
+
 
 ### Multi-Tenancy
 
