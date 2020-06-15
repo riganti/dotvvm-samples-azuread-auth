@@ -13,11 +13,11 @@ sample for [DotVVM](https://github.com/riganti/dotvvm).
 
 4. Copy the _Application ID_ value and paste it in the `ClientId` application setting in the `web.config` file.
 
-![IDs section](/screenshots/ids.png?raw=true "IDs section")
+![IDs section](/Screenshots/ids.png?raw=true "IDs section")
 
 5. Make sure that the URL on which the web app is running, is listed in the _Home page URL_ field in the tab Branding and redirect URIs set in  _Redirect URIs_ field in Authentication section. The URLs must match including the HTTP/HTTPS and port.
 
-![Redirect URIs section](/screenshots/redirects.png?raw=true "Redirect URIs section")
+![Redirect URIs section](/Screenshots/redirects.png?raw=true "Redirect URIs section")
 
 6. In ASP.NET Core version, set the `PostLogoutRedirectUri` application setting to the application root URL.
 
