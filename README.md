@@ -3,7 +3,7 @@
 This is a sample app featuring the [Azure Active Directory authentication](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-scenarios) 
 sample for [DotVVM](https://github.com/riganti/dotvvm).
 
-### Instructions
+### Running the sample app
 
 1. Sign in to the Azure Portal and open (or create) your Azure Active Directory resource.
 
