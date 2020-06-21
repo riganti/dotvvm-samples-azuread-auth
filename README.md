@@ -34,3 +34,13 @@ If you want to make the application multi-tenant (to allow the users to sign in 
 
 2. In the `web.config` or `appsettings.json`, change the `TenantId` to the value `common`.
 
+
+## Other resources
+
+* [DotVVM.com](https://www.dotvvm.com)
+* [DotVVM Blog](https://www.dotvvm.com/blog)
+* [Documentation](https://www.dotvvm.com/docs)
+* [Twitter @dotvvm](https://twitter.com/dotvvm)
+* [Gitter Chat](https://gitter.im/riganti/dotvvm)
+* [Samples](https://github.com/search?q=topic%3Adotvvm-sample+org%3Ariganti&type=Repositories)
+* [Roadmap](https://github.com/riganti/dotvvm/blob/master/roadmap.md)
