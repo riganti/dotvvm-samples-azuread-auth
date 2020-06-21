@@ -3,7 +3,19 @@
 This is a sample app featuring the [Azure Active Directory authentication](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-scenarios) 
 sample for [DotVVM](https://github.com/riganti/dotvvm).
 
-### Running the sample app
+## Running the sample app
+
+1. Clone the repository using command `git clone https://github.com/riganti/dotvvm-samples-azuread-auth.git`
+
+2. Open desired solution DotvvmAuth in Visual Studio. Available for both Owin and AspNetCore
+
+3. Configure AAD authentication as described at section Instructions.
+
+4. Make sure application is running on URL used in section Instructions.
+
+5. Run the project
+
+### Instructions
 
 1. Sign in to the Azure Portal and open (or create) your Azure Active Directory resource.
 
