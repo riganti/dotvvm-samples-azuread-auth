@@ -24,7 +24,7 @@ namespace DotvvmAuthSample.ViewModels
             Context.GetAuthentication().SignOut(CookieAuthenticationDefaults.AuthenticationType, OpenIdConnectAuthenticationDefaults.AuthenticationType);
             
             // tell DotVVM not to continue with processing this request
-            Context.InterruptRequest();
+            Context.RedirectToRoute("Default");
         }
     }
 }
