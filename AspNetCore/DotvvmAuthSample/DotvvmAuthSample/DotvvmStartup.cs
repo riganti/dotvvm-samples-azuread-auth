@@ -1,5 +1,4 @@
 ﻿using DotVVM.Framework.Configuration;
-using DotVVM.Framework.ResourceManagement;
 using DotVVM.Framework.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -34,6 +33,8 @@ namespace DotvvmAuthSample
         public void ConfigureServices(IDotvvmServiceCollection options)
         {
             // configure DotVVM services
+            options.AddDefaultTempStorages("temp");
+            options.AddHotReload();
         }
     }
 }

@@ -1,34 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-    <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    </PropertyGroup>
-    <ItemGroup>
-        <!--Include Views-->
-        <Content Include="**/*.dothtml" Exclude="obj/**/*.*;bin/**/*.*">
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-        <!--Include MasterPage Views-->
-        <Content Include="**/*.dotmaster" Exclude="obj/**/*.*;bin/**/*.*">
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-        <!--Include Custom Control Views-->
-        <Content Include="**/*.dotcontrol" Exclude="obj/**/*.*;bin/**/*.*">
-            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-        </Content>
-    </ItemGroup>
-    <ItemGroup>
-        <None Remove="dotvvm_serialized_config.json.tmp" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="wwwroot\" />
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="DotVVM.AspNetCore" Version="2.4.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.5" />
-
-    </ItemGroup>
-    <ItemGroup>
-        <DotNetCliToolReference Include="DotVVM.Compiler.Light" Version="2.0.0" />
-    </ItemGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <UserSecretsId>0627c0d7-cb39-4208-a62e-fc3d02ac9b50</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="**/*.dothtml;**/*.dotmaster;**/*.dotcontrol" Exclude="obj/**/*.*;bin/**/*.*" CopyToPublishDirectory="Always" />
+    <None Remove="**/*.dothtml;**/*.dotmaster;**/*.dotcontrol" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="dotvvm_serialized_config.json.tmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DotVVM.AspNetCore" Version="4.3.4" />
+    <PackageReference Include="DotVVM.HotReload.AspNetCore" Version="4.3.4" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="3.5.0" />
+  </ItemGroup>
 </Project>
